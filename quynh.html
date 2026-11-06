@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Workbench — Dao Thuy Quynh</title>
+<style>
+:root{--bg:#f9e9e2;--paper:#fffaf7;--ink:#302827;--muted:#9a8983;--line:#f1e4de;--accent:#e78356;--shadow:0 12px 35px #8e63500d}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+.app{min-height:100vh;padding:16px;display:grid;grid-template-columns:164px minmax(0,1fr);gap:38px}
+.sidebar{background:#fff8f4d9;border:1px solid #fff9;border-radius:24px;padding:16px 10px;position:sticky;top:16px;height:calc(100vh - 32px);min-height:540px}
+.brand{font-weight:700;padding:3px 9px 17px}
+.nav{display:grid;gap:4px}.nav-group{display:grid;gap:4px}
+.nav button{border:0;background:transparent;color:#71625d;text-align:left;padding:9px 10px;border-radius:11px;cursor:pointer;font:inherit}
+.nav button:hover,.nav button.active{background:white;color:#342c29}
+.nav .ico{display:inline-block;width:22px;color:#b89787}
+.nav hr{border:0;border-top:1px solid var(--line);margin:11px 8px}
+.main{max-width:1280px;width:100%;margin:0 auto;padding:10px 0 64px}
+.topbar{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;padding:0 2px}
+.top-actions{display:flex;gap:18px;align-items:center}
+.top-actions button{border:0;background:none;color:inherit;cursor:pointer;font:inherit}
+.avatar{width:28px;height:28px;border-radius:50%;background:#fff;display:grid;place-items:center;color:#66534d;font-weight:600}
+.hero{display:flex;justify-content:space-between;align-items:end;margin:35px 0 16px;gap:24px}
+.hero h1{font-size:42px;letter-spacing:-1.5px;line-height:1.1;margin:0 0 12px;font-weight:750}
+.hero p{margin:0;color:#80716b;font-size:13px}
+.focus-card{min-width:230px;background:#fffaf7cf;border:1px solid #fff;border-radius:20px;padding:14px 17px;box-shadow:var(--shadow)}
+.focus-card strong{display:block;font-size:16px}.focus-card small{color:var(--muted)}
+.quick{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fffaf7;border:1px solid #fff;border-radius:18px;padding:8px 9px 8px 16px;box-shadow:var(--shadow)}
+.quick input{flex:1 1 200px;min-width:150px;border:0;background:transparent;outline:0;color:var(--ink);font:inherit}
+button{font:inherit}
+.quick button,.primary{background:var(--accent);color:white;border:0;border-radius:11px;padding:8px 13px;cursor:pointer}
+.quick .quick-action{background:#fff0e8;color:#795647;padding:8px 10px;white-space:nowrap}
+.quick .quick-action.active{background:#f1d5c8}
+.quick .quick-submit{padding:8px 12px}
+.section{margin-top:38px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px}
+.section-head h2{font-size:18px;margin:0}.section-head span{font-size:11px;color:#a18f88}
+.grid{display:grid;gap:14px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:#fffaf7d9;border:1px solid #fff;border-radius:20px;padding:17px 18px;box-shadow:var(--shadow)}
+.stat label,.panel label{font-size:11px;color:#867771}
+.stat strong{display:block;font-size:29px;letter-spacing:-.6px;margin:8px 0 3px}
+.stat small{color:#8d7e78;font-size:11px}
+.stat p{font-size:12px;color:#756761;margin:8px 0 0}
+.modules{grid-template-columns:repeat(3,minmax(0,1fr))}
+.module.featured{grid-column:span 2}
+.module-summary{margin:8px 0;color:#81716b;font-size:12px}
+.rows{margin-top:9px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}
+.row:last-child{border:0}.row small{color:var(--muted);white-space:nowrap}
+.shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}
+.shortcut strong{font-size:14px}.shortcut p{color:#81716b;font-size:12px;margin:8px 0 0}
+.planner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.planner-card{min-width:0}
+.planner-heading{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.planner-heading strong{font-size:15px}.planner-heading p{margin:4px 0 12px;color:#81716b;font-size:12px}
+.count-badge{white-space:nowrap;border-radius:999px;background:#fff0e8;color:#885f4e;padding:4px 9px;font-size:11px}
+.planner-form{display:flex;flex-wrap:wrap;gap:8px}
+.planner-form input,.planner-form select{border:1px solid var(--line);border-radius:10px;background:#fffdfa;color:var(--ink);padding:9px 10px;font:inherit;font-size:12px;min-width:0}
+.planner-form input:first-child{flex:1 1 100%}
+.planner-form input[type=date],.planner-form input[type=time],.planner-form select{flex:1 1 120px}
+.planner-form button{flex:1 1 auto}
+.planner-list{list-style:none;padding:0;margin:12px 0 0}
+.planner-item{display:flex;align-items:center;gap:9px;border-top:1px solid var(--line);padding:10px 2px;font-size:12px}
+.planner-item input[type=checkbox]{accent-color:var(--accent)}
+.planner-item .item-copy{flex:1;min-width:0}
+.planner-item .item-copy strong{display:block;font-weight:600;overflow-wrap:anywhere}
+.planner-item .item-meta{color:var(--muted);font-size:10px}
+.planner-item.is-done .item-copy strong{text-decoration:line-through;color:var(--muted)}
+.delete-item{background:transparent;border:0;color:#a18f88;cursor:pointer;font-size:16px}
+.empty-state{color:var(--muted);font-size:12px;padding:14px 2px}
+.media-card{padding:18px}.media-controls{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.media-modes{display:flex;gap:7px}.media-mode{border:1px solid var(--line);background:#fffaf7;color:#78665f;border-radius:10px;padding:8px 13px;cursor:pointer}
+.media-mode.active{background:#342c29;color:white;border-color:#342c29}
+.media-file-label{background:#fff0e8;color:#795647;border-radius:10px;padding:9px 12px;cursor:pointer;font-size:12px}
+.media-file-label input{display:none}.media-url-form{display:flex;gap:9px;margin-top:14px}
+.media-url-form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;background:#fffdfa;padding:10px 12px;font:inherit;font-size:12px}
+.media-hint{color:var(--muted);font-size:11px;margin:10px 2px}
+.media-stage{min-height:74px;background:#fff7f2;border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;place-items:center}
+.media-stage audio{width:100%}.media-stage video{width:100%;max-height:440px;border-radius:10px;background:#211d1b}
+.media-empty{text-align:center;color:var(--muted);font-size:12px}.knowledge-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.knowledge-item:last-child{border-bottom:0}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#342c29;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s;z-index:10}
+.toast.show{opacity:1}
+.searchbox{position:fixed;inset:0;background:#30282755;display:none;place-items:center;padding:20px;z-index:20}
+.searchbox.open{display:grid}.searchmodal{width:min(520px,100%);background:var(--paper);border-radius:20px;padding:20px}
+.searchmodal input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);font:inherit;background:white}
+.searchmodal header{display:flex;justify-content:space-between;margin-bottom:12px}.searchmodal button{border:0;background:none;cursor:pointer}
+@media(max-width:1000px){.app{grid-template-columns:1fr;gap:18px;padding:12px}.sidebar{position:static;height:auto;min-height:0;padding:10px;border-radius:18px}.brand{padding:2px 8px 9px}.nav{display:flex;overflow:auto;align-items:flex-start}.nav-group{display:flex;gap:4px}.nav hr{height:24px;border:0;border-left:1px solid var(--line);margin:5px 3px}.nav button{white-space:nowrap}.main{padding:4px 2px 40px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.modules,.shortcuts,.planner-grid{grid-template-columns:1fr}.module.featured{grid-column:auto}}
+@media(max-width:600px){.hero{align-items:flex-start;flex-direction:column;margin-top:25px}.hero h1{font-size:32px}.focus-card{width:100%}.stats{gap:9px}.card{padding:14px;border-radius:16px}.stat strong{font-size:24px}.quick{align-items:stretch}.quick input{flex-basis:100%}.quick .quick-action{flex:1}.media-controls{align-items:flex-start;flex-direction:column}.media-url-form{flex-direction:column}.media-url-form button{width:100%}.topbar{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">Personal Workbench</div>
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-group">
+      <button class="active" data-target="overview"><span class="ico">☆</span>Overview</button>
+      <button data-target="taskPlanner"><span class="ico">▱</span>Tasks</button>
+      <button data-target="studyPlanner"><span class="ico">◷</span>Study Plan</button>
+      <button data-target="hotspots"><span class="ico">♨</span>Ideas & Content</button>
+      <button data-target="knowledge"><span class="ico">◫</span>Knowledge</button>
+    </div>
+    <hr>
+    <div class="nav-group">
+      <button data-target="quickEntries"><span class="ico">↻</span>Review</button>
+      <button data-target="longterm"><span class="ico">⌁</span>Long-Term Goals</button>
+      <button data-target="mediaPlayer"><span class="ico">♫</span>Music & Video</button>
+    </div>
+  </nav>
+</aside>
+<main class="main">
+  <div class="topbar"><span id="todayDate">Today</span><div class="top-actions"><button id="searchBtn">Search</button><button id="notifyBtn">Notifications</button><span class="avatar" title="Dao Thuy Quynh">D</span></div></div>
+  <div class="hero"><div><h1>Good evening, Quynh.</h1><p>Dao Thuy Quynh · Marketing student at the International Institute, University of Industry and Trade. Make steady progress, one focused block at a time.</p></div><div class="focus-card"><strong>Today's focus</strong><small>Marketing studies · focused study blocks</small></div></div>
+  <form class="quick" id="quickForm"><input id="quickInput" placeholder="Quick capture: add a task, idea, or study note…" aria-label="Quick capture"><button type="button" class="quick-action active" data-mode="todo">＋ To-do</button><button type="button" class="quick-action" data-mode="idea">✎ Idea</button><button type="button" class="quick-action" data-mode="study">▤ Study Note</button><button class="quick-submit" aria-label="Save quick entry">↵</button></form>
+  <section class="section" id="overview"><div class="section-head"><h2>Today's Scorecard</h2><span>Study, coursework, and creative momentum</span></div><div class="grid stats">
+    <article class="card stat"><label>Focused Study Sessions</label><strong>0<small> sessions</small></strong><small>Target today: 2 sessions</small><p>Protect two focused blocks for your most important coursework.</p></article>
+    <article class="card stat"><label>Study Time</label><strong>0<small> hours</small></strong><small>Target today: 2 hours</small><p>Short, consistent study blocks make progress easier to sustain.</p></article>
+    <article class="card stat"><label>Marketing Tasks</label><strong>0<small> / 3</small></strong><small>Target today: complete 3 tasks</small><p>Finish the highest-priority assignment before adding more work.</p></article>
+    <article class="card stat"><label>Marketing Ideas</label><strong>0<small> / 3</small></strong><small>Target today: capture 3 ideas</small><p>Save useful customer insights and campaign examples as you find them.</p></article>
+  </div></section>
+  <section class="section" id="modules"><div class="section-head"><h2>Learning & Growth</h2><span>Three modules to keep the week moving</span></div><div class="grid modules">
+    <article class="card panel module featured" id="work"><label>Marketing Coursework & Projects · Most Important</label><p class="module-summary">Turn marketing concepts into practical work through focused assignments and campaign projects.</p><div class="rows"><div class="row"><span>Define a target audience for a campaign</span><small>Today</small></div><div class="row"><span>Analyze a successful brand campaign</span><small>In progress</small></div><div class="row"><span>Review STP and the marketing mix</span><small>Next</small></div></div></article>
+    <article class="card panel module" id="hotspots"><label>Ideas & Content</label><p class="module-summary">Collect insights, examples, and themes that can grow into content or project ideas.</p><div class="rows"><div class="row"><span>Save an effective social media ad</span><small>Idea</small></div><div class="row"><span>Research a current consumer trend</span><small>Research</small></div><div class="row"><span>Draft a short campaign concept</span><small>Content</small></div></div></article>
+    <article class="card panel module" id="longterm"><label>Personal Growth</label><p class="module-summary">Build steady study habits, grow practical skills, and review progress each week.</p><div class="rows"><div class="row"><span>Complete this week's study goal</span><small>This week</small></div><div class="row"><span>Update your resume and project portfolio</span><small>Long term</small></div><div class="row"><span>Write down one thing learned today</span><small>Daily</small></div></div></article>
+  </div></section>
+  <section class="section" id="taskPlanner"><div class="section-head"><h2>Work & Study Planner</h2><span>Manage tasks and schedule study sessions</span></div><div class="grid planner-grid">
+    <article class="card planner-card" id="taskListCard"><div class="planner-heading"><div><strong>Task List</strong><p>Add tasks, set due dates and priorities, and mark work complete.</p></div><span class="count-badge" id="taskCount">0 tasks left</span></div><form id="taskForm" class="planner-form"><input id="taskTitle" required maxlength="100" placeholder="e.g. Finish the Marketing assignment"><input id="taskDue" type="date" aria-label="Due date"><select id="taskPriority" aria-label="Priority"><option value="High">High priority</option><option value="Medium" selected>Medium priority</option><option value="Low">Low priority</option></select><button class="primary">Add Task</button></form><ul class="planner-list" id="taskList"></ul></article>
+    <article class="card planner-card" id="studyPlanner"><div class="planner-heading"><div><strong>Study Schedule</strong><p>Plan sessions by subject, date, start time, and duration.</p></div><span class="count-badge" id="studyCount">0 sessions</span></div><form id="studyForm" class="planner-form"><input id="studySubject" required maxlength="80" placeholder="Course or topic"><input id="studyDate" type="date" required aria-label="Study date"><input id="studyTime" type="time" required aria-label="Start time"><select id="studyDuration" aria-label="Duration"><option value="30">30 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select><button class="primary">Schedule Study</button></form><ul class="planner-list" id="studyList"></ul></article>
+  </div></section>
+  <section class="section" id="mediaPlayer"><div class="section-head"><h2>Music & Video</h2><span>Play media right in your workbench</span></div><article class="card media-card"><div class="media-controls"><div class="media-modes" role="tablist" aria-label="Choose media type"><button type="button" class="media-mode active" data-mode="audio">♫ Music</button><button type="button" class="media-mode" data-mode="video">▷ Video</button></div><label class="media-file-label">Choose a file<input id="mediaFile" type="file" accept="audio/*,video/*"></label></div><form id="mediaUrlForm" class="media-url-form"><input id="mediaUrl" type="url" placeholder="Or paste a direct .mp3, .mp4, or .webm link…" aria-label="Media URL"><button class="primary">Play Link</button></form><p class="media-hint">Local files play from your device. A URL must point directly to a public audio or video file.</p><div class="media-stage"><audio id="audioPlayer" controls preload="metadata" hidden></audio><video id="videoPlayer" controls preload="metadata" playsinline hidden></video><div id="mediaEmpty" class="media-empty">Choose Music or Video, then select a file or paste a direct media link.</div></div></article></section>
+  <section class="section" id="knowledge"><div class="section-head"><h2>Knowledge</h2><span>A growing library for your studies</span></div><div class="card"><div class="knowledge-item"><span>Marketing concepts and course notes</span><small>Study library</small></div><div class="knowledge-item"><span>Marketing research and campaign examples</span><small>Research</small></div><div class="knowledge-item"><span>Weekly learning review</span><small>Reflection</small></div></div></section>
+  <section class="section" id="quickEntries"><div class="section-head"><h2>Quick Entries</h2><span>Start with one small action</span></div><div class="grid shortcuts">
+    <article class="card shortcut"><strong>Meeting Notes</strong><p>Capture key points, decisions, and follow-ups after every meeting.</p></article>
+    <article class="card shortcut"><strong>Marketing Idea</strong><p>Save a customer insight or campaign example to develop into a plan later.</p></article>
+    <article class="card shortcut"><strong>Daily Review</strong><p>Note one win from today and one improvement to try tomorrow.</p></article>
+  </div></section>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="searchbox" id="searchbox"><div class="searchmodal"><header><strong>Search your workbench</strong><button id="closeSearch" type="button" aria-label="Close search">✕</button></header><input id="searchInput" placeholder="Search tasks, study sessions, or ideas…" autofocus></div></div>
+<script>
+const taskKey='quynh-workbench-tasks-v1';
+const studyKey='quynh-workbench-study-v1';
+const noteKey='quynh-workbench-notes-v1';
+let tasks=JSON.parse(localStorage.getItem(taskKey)||'[]');
+let studySessions=JSON.parse(localStorage.getItem(studyKey)||'[]');
+let notes=JSON.parse(localStorage.getItem(noteKey)||'[]');
+function savePlanner(){localStorage.setItem(taskKey,JSON.stringify(tasks));localStorage.setItem(studyKey,JSON.stringify(studySessions));localStorage.setItem(noteKey,JSON.stringify(notes))}
+function renderTasks(){const list=document.querySelector('#taskList');list.replaceChildren();const openCount=tasks.filter(task=>!task.done).length;document.querySelector('#taskCount').textContent=openCount+' tasks left';if(!tasks.length){list.innerHTML='<li class="empty-state">No tasks yet. Add your first task above.</li>';return}tasks.forEach(task=>{const li=document.createElement('li');li.className='planner-item'+(task.done?' is-done':'');li.innerHTML='<input type="checkbox" aria-label="Mark task complete"><span class="item-copy"><strong></strong><span class="item-meta"></span></span><button class="delete-item" aria-label="Delete task">×</button>';const check=li.querySelector('input');check.checked=task.done;check.onchange=()=>{task.done=check.checked;savePlanner();renderTasks()};li.querySelector('strong').textContent=task.title;li.querySelector('.item-meta').textContent=[task.due?'Due '+new Date(task.due+'T00:00:00').toLocaleDateString('en-US'):'No due date','Priority: '+task.priority].join(' · ');li.querySelector('.delete-item').onclick=()=>{tasks=tasks.filter(item=>item.id!==task.id);savePlanner();renderTasks()};list.append(li)})}
+function renderStudy(){const list=document.querySelector('#studyList');list.replaceChildren();document.querySelector('#studyCount').textContent=studySessions.length+' sessions scheduled';if(!studySessions.length){list.innerHTML='<li class="empty-state">No study sessions yet. Add a subject and time above.</li>';return}studySessions.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));studySessions.forEach(session=>{const li=document.createElement('li');li.className='planner-item';li.innerHTML='<span class="ico">◷</span><span class="item-copy"><strong></strong><span class="item-meta"></span></span><button class="delete-item" aria-label="Delete study session">×</button>';li.querySelector('strong').textContent=session.subject;li.querySelector('.item-meta').textContent=new Date(session.date+'T00:00:00').toLocaleDateString('en-US')+' · '+session.time+' · '+session.duration+' min';li.querySelector('.delete-item').onclick=()=>{studySessions=studySessions.filter(item=>item.id!==session.id);savePlanner();renderStudy()};list.append(li)})}
+function showToast(message){const toast=document.querySelector('#toast');toast.textContent=message;toast.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove('show'),2200)}
+function addTask(title){tasks.push({id:crypto.randomUUID(),title:title,due:'',priority:'Medium',done:false});savePlanner();renderTasks()}
+document.querySelector('#taskForm').addEventListener('submit',event=>{event.preventDefault();tasks.push({id:crypto.randomUUID(),title:document.querySelector('#taskTitle').value.trim(),due:document.querySelector('#taskDue').value,priority:document.querySelector('#taskPriority').value,done:false});savePlanner();renderTasks();event.target.reset();showToast('Task added.')});
+document.querySelector('#studyForm').addEventListener('submit',event=>{event.preventDefault();studySessions.push({id:crypto.randomUUID(),subject:document.querySelector('#studySubject').value.trim(),date:document.querySelector('#studyDate').value,time:document.querySelector('#studyTime').value,duration:document.querySelector('#studyDuration').value});savePlanner();renderStudy();event.target.reset();showToast('Study session scheduled.')});
+renderTasks();renderStudy();
+let quickMode='todo';
+document.querySelectorAll('.quick-action').forEach(button=>button.addEventListener('click',()=>{quickMode=button.dataset.mode;document.querySelectorAll('.quick-action').forEach(item=>item.classList.toggle('active',item===button));const input=document.querySelector('#quickInput');input.placeholder=quickMode==='todo'?'Quick capture: add a task…':quickMode==='idea'?'Quick capture: save a Marketing idea…':'Quick capture: save a study note…';input.focus()}));
+document.querySelector('#quickForm').addEventListener('submit',event=>{event.preventDefault();const input=document.querySelector('#quickInput');const value=input.value.trim();if(!value){input.focus();return}if(quickMode==='todo'){addTask(value);showToast('Task added.')}else{notes.unshift({id:crypto.randomUUID(),type:quickMode,text:value,createdAt:new Date().toISOString()});savePlanner();showToast(quickMode==='idea'?'Marketing idea saved.':'Study note saved.')}input.value=''});
+document.querySelectorAll('.nav button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(item=>item.classList.remove('active'));button.classList.add('active');document.getElementById(button.dataset.target)?.scrollIntoView({behavior:'smooth',block:'start'})}));
+document.querySelectorAll('.shortcut').forEach((card,index)=>card.addEventListener('click',()=>{quickMode=index===0?'todo':index===1?'idea':'study';const action=document.querySelector('.quick-action[data-mode="'+quickMode+'"]');action?.click();document.querySelector('#quickInput').focus()}));
+const searchbox=document.querySelector('#searchbox');document.querySelector('#searchBtn').onclick=()=>searchbox.classList.add('open');document.querySelector('#closeSearch').onclick=()=>searchbox.classList.remove('open');searchbox.addEventListener('click',event=>{if(event.target===searchbox)searchbox.classList.remove('open')});document.querySelector('#searchInput').addEventListener('keydown',event=>{if(event.key==='Enter'){const query=event.target.value.trim().toLowerCase();const match=tasks.find(task=>task.title.toLowerCase().includes(query))||studySessions.find(session=>session.subject.toLowerCase().includes(query));searchbox.classList.remove('open');showToast(match?'Found: '+(match.title||match.subject):'No matching task or study session found.')}});document.querySelector('#notifyBtn').onclick=()=>showToast('No new notifications.');document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){event.preventDefault();searchbox.classList.add('open')}if(event.key==='Escape')searchbox.classList.remove('open')});
+const today=new Date();document.querySelector('#todayDate').textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+const mediaState={mode:'audio',objectUrl:null};const audioPlayer=document.querySelector('#audioPlayer');const videoPlayer=document.querySelector('#videoPlayer');const mediaFile=document.querySelector('#mediaFile');const mediaEmpty=document.querySelector('#mediaEmpty');
+function clearMedia(){audioPlayer.pause();videoPlayer.pause();audioPlayer.removeAttribute('src');videoPlayer.removeAttribute('src');audioPlayer.load();videoPlayer.load();if(mediaState.objectUrl){URL.revokeObjectURL(mediaState.objectUrl);mediaState.objectUrl=null}audioPlayer.hidden=true;videoPlayer.hidden=true;mediaEmpty.hidden=false}
+function playMedia(src){clearMedia();if(src.startsWith('blob:'))mediaState.objectUrl=src;mediaEmpty.hidden=true;const player=mediaState.mode==='audio'?audioPlayer:videoPlayer;player.src=src;player.hidden=false;player.load();player.play().catch(()=>showToast('Media is ready. Press play to start.'))}
+document.querySelectorAll('.media-mode').forEach(button=>button.addEventListener('click',()=>{if(mediaState.mode===button.dataset.mode)return;mediaState.mode=button.dataset.mode;document.querySelectorAll('.media-mode').forEach(item=>item.classList.toggle('active',item===button));mediaFile.accept=mediaState.mode==='audio'?'audio/*':'video/*';document.querySelector('#mediaUrl').placeholder=mediaState.mode==='audio'?'Paste a direct .mp3 or .wav link…':'Paste a direct .mp4 or .webm link…';clearMedia()}));
+mediaFile.addEventListener('change',()=>{const file=mediaFile.files?.[0];if(!file)return;if(mediaState.mode==='audio'&&!file.type.startsWith('audio/')){showToast('Please choose an audio file.');mediaFile.value='';return}if(mediaState.mode==='video'&&!file.type.startsWith('video/')){showToast('Please choose a video file.');mediaFile.value='';return}playMedia(URL.createObjectURL(file))});
+document.querySelector('#mediaUrlForm').addEventListener('submit',event=>{event.preventDefault();const url=document.querySelector('#mediaUrl').value.trim();if(!url)return;try{playMedia(new URL(url).href)}catch{showToast('Please enter a valid URL.')}});
+</script>
+</body>
+</html>
+
+
+
